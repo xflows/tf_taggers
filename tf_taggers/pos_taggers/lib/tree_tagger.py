@@ -41,54 +41,7 @@ interpelations = {'NP':'NNP', 'NPS':'NNPS', 'PP':'PRP', 'PP$':'PRP$',
                    
 
 class TreeTagger(TaggerI):
-    ur"""
-    A class for pos tagging with TreeTagger. The input is the paths to:
-     - a language trained on training data
-     - (optionally) the path to the TreeTagger binary
-     - (optionally) the encoding of the training data (default: utf-8)
-
-    This class communicates with the TreeTagger binary via pipes.
-
-    Example:
-
-    .. doctest::
-        :options: +SKIP
-
-        >>> from treetagger import TreeTagger
-        >>> tt = TreeTagger(encoding='utf-8',language='english')
-        >>> tt.tag(u'What is the airspeed of an unladen swallow ?')
-        [[u'What', u'WP', u'What'],
-         [u'is', u'VBZ', u'be'],
-         [u'the', u'DT', u'the'],
-         [u'airspeed', u'NN', u'airspeed'],
-         [u'of', u'IN', u'of'],
-         [u'an', u'DT', u'an'],
-         [u'unladen', u'JJ', u'<unknown>'],
-         [u'swallow', u'NN', u'swallow'],
-         [u'?', u'SENT', u'?']]
-
-    .. doctest::
-        :options: +SKIP
-
-        >>> from treetagger import TreeTagger
-        >>> tt = TreeTagger()
-        >>> tt.tag(u'Das Haus ist sehr schön und groß. Es hat auch einen hübschen Garten.')
-        [[u'Das', u'ART', u'd'],
-         [u'Haus', u'NN', u'Haus'],
-         [u'ist', u'VAFIN', u'sein'],
-         [u'sehr', u'ADV', u'sehr'],
-         [u'sch\xf6n', u'ADJD', u'sch\xf6n'],
-         [u'und', u'KON', u'und'],
-         [u'gro\xdf', u'ADJD', u'gro\xdf'],
-         [u'.', u'$.', u'.'],
-         [u'Es', u'PPER', u'es'],
-         [u'hat', u'VAFIN', u'haben'],
-         [u'auch', u'ADV', u'auch'],
-         [u'einen', u'ART', u'ein'],
-         [u'h\xfcbschen', u'ADJA', u'h\xfcbsch'],
-         [u'Garten', u'NN', u'Garten'],
-         [u'.', u'$.', u'.']]
-    """
+    
 
     def __init__(self, path_to_home=None, language='english', 
                  encoding='utf-8', verbose=False, abbreviation_list=None, widget_id=None, trained=False):
@@ -146,8 +99,6 @@ class TreeTagger(TaggerI):
         for sent in sentences:
             for i, token in enumerate(sent):
                 word, tag = token
-                if tag == '-NONE-':
-                    print(sent)
                 if len(word) == 0:
                     word = '-NONE-'
                     tag = '-NONE-'
@@ -217,18 +168,6 @@ class TreeTagger(TaggerI):
             f = open(os.path.join(settings.TREE_TAGGER, str(self.widget_id) + ".txt"), 'a')
 
             for sentence in sentences:
-                #sentence = ' '.join(sentence)
-                #sentence = sentence.replace(" 's ", "'s ")
-                #sentence = sentence.replace(" 'm ", "'m ")
-                #sentence = sentence.replace(" 're ", "'re ")
-                #sentence = sentence.replace(" 'll ", "'ll ")
-                #sentence = sentence.replace(" 've ", "'ve ")
-                #sentence = sentence.replace(" 'd ", "'d ")
-                #sentence = sentence.replace('\xe2\x84\x87"', "\xe2\x84\x87")
-                #sentence = re.sub(r" ([^ ']+)' ", r" \1 ", sentence)
-                #sentence = re.sub(r" '([^ ']+) ", r" \1 ", sentence)
-                #sentence = re.sub(r" ([^ ']+)-- ", r" \1 ", sentence)
-                #sentence = re.sub(r" ([^ .]+)\. ", r" \1 ", sentence)
                 for token in sentence:
                     if len(token) == 0:
                         f.write('-NONE-\n')
@@ -346,8 +285,16 @@ class TreeTagger(TaggerI):
             #    print('popravu', standard, fixed)
             new = fixed
 
-        if not len(new) == len(standard):
-            print('ni popravu: ', standard, new)
+        #nothing worked, just pad or cut sentence so it fits input length
+        if len(new) != len(standard):
+            print("not fixed", new, standard)
+            if len(new) > len(standard):
+                new = new[:len(standard)]
+            else:
+                for i in range(len(new), len(standard)):
+                    new.append((standard[i], '-NONE-'))
+        if len(new) != len(standard):
+            print("this shouldn't happend", new, standard)
 
         return new
 

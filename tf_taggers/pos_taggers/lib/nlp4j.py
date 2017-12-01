@@ -50,10 +50,7 @@ class NLP4JTagger():
         args.extend(["-m", self.model_path])
         args.extend(["-d", self.dev_path])
        
-        print(args)
         popen = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
-        for line in iter(popen.stdout.readline, ""):
-            print(line)
         popen.communicate()
 
 
@@ -70,18 +67,6 @@ class NLP4JTagger():
                 os.remove(self.input_path)
             f = open(self.input_path, 'a')
             for sentence in sentences:
-                #sentence = ' '.join(sentence)
-                #sentence = sentence.replace(" 's ", "'s ")
-                #sentence = sentence.replace(" 'm ", "'m ")
-                #sentence = sentence.replace(" 're ", "'re ")
-                #sentence = sentence.replace(" 'll ", "'ll ")
-                #sentence = sentence.replace(" 've ", "'ve ")
-                #sentence = sentence.replace(" 'd ", "'d ")
-                #sentence = sentence.replace('\xe2\x84\x87"', "\xe2\x84\x87")
-                #sentence = re.sub(r" ([^ ']+)' ", r" \1 ", sentence)
-                #sentence = re.sub(r" '([^ ']+) ", r" \1 ", sentence)
-                #sentence = re.sub(r" ([^ ']+)-- ", r" \1 ", sentence)
-                #sentence = re.sub(r" ([^ .]+)\. ", r" \1 ", sentence)
                 for token in sentence:
                     if len(token) == 0:
                         f.write(' -NONE- ')
@@ -205,8 +190,16 @@ class NLP4JTagger():
             #    print('popravu', standard, fixed)
             new = fixed
 
-        if not len(new) == len(standard):
-            print('ni popravu: ', standard, new)
+        #nothing worked, just pad or cut sentence so it fits input length
+        if len(new) != len(standard):
+            print("not fixed", new, standard)
+            if len(new) > len(standard):
+                new = new[:len(standard)]
+            else:
+                for i in range(len(new), len(standard)):
+                    new.append((standard[i], '-NONE-'))
+        if len(new) != len(standard):
+            print("this shouldn't happend", new, standard)
 
         return new
 
