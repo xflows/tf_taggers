@@ -1,9 +1,0 @@
-{
-  "model": "workflows.category", 
-  "fields": {
-    "uid": "bb196a4d-7235-475d-bb4a-8210564f9c37", 
-    "parent": null, 
-    "order": 3, 
-    "name": "Tokenization"
-  }
-}
