@@ -1,0 +1,9 @@
+{
+  "model": "workflows.category", 
+  "fields": {
+    "uid": "46050a99-188d-40e1-90e5-0c1912059fa7", 
+    "parent": null, 
+    "order": 9, 
+    "name": "Classification"
+  }
+}

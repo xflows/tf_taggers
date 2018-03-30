@@ -1,0 +1,9 @@
+{
+  "model": "workflows.category", 
+  "fields": {
+    "uid": "49d5fda2-23d4-444a-a6df-3c5714d2fdfd", 
+    "parent": null, 
+    "order": 6, 
+    "name": "Stop Words"
+  }
+}

@@ -16,7 +16,7 @@
       "action": "tnt_pos_tagger", 
       "wsdl": "", 
       "name": "TNT POS tagger", 
-      "package": "tf_core.nltoolkit", 
+      "package": "tf_taggers.pos_taggers", 
       "visualization_view": "", 
       "post_interact_action": "", 
       "wsdl_method": "", 

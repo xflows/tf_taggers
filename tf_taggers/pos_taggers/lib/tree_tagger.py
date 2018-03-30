@@ -66,14 +66,12 @@ class TreeTagger(TaggerI):
         self.params = os.path.join(settings.TREE_TAGGER, 'lib')
         self.trained = trained
 
-        try:
-            self._encoding = encoding
-            if language=='english':
-                treetagger_bin_name = 'tree-tagger'
-                train_treetagger_bin_name = 'train-tree-tagger'
+        
+        self._encoding = encoding
+        if language=='english':
+            treetagger_bin_name = 'tree-tagger'
+            train_treetagger_bin_name = 'train-tree-tagger'
 
-        except KeyError as e:
-                raise LookupError('NLTK was unable to find the TreeTagger bin!')
 
         self._treetagger_bin = find_binary(
             treetagger_bin_name, path_to_home,

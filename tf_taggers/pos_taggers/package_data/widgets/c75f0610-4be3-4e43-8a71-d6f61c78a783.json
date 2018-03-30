@@ -16,7 +16,7 @@
       "action": "nlp4j_tagger", 
       "wsdl": "", 
       "name": "NLP4J POS tagger", 
-      "package": "tf_core.nltoolkit", 
+      "package": "tf_taggers.pos_taggers", 
       "visualization_view": "", 
       "post_interact_action": "", 
       "wsdl_method": "", 
