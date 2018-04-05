@@ -81,7 +81,7 @@ class NLP4JTagger():
         args.append(os.path.join(self.path_to_bin, 'nlpdecode'))
         args.extend(["-c", self.config_file])
         args.extend(["-i", self.input_path])
-        popen = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=1)
+        popen = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=-1)
         popen.communicate()
 
         f = open(self.input_path + '.nlp', 'r')
