@@ -58,7 +58,7 @@ class NLP4JTagger():
         input_ext="*" 
         utput_ext="nlp" 
         format="raw"
-        threads=2
+        threads='1'
 
         old = sentences
 
@@ -77,12 +77,14 @@ class NLP4JTagger():
                 f.write(' ### ') 
             f.close()
            
-        args = []
-        args.append(os.path.join(self.path_to_bin, 'nlpdecode'))
-        args.extend(["-c", self.config_file])
-        args.extend(["-i", self.input_path])
-        popen = subprocess.Popen(args, stdout=subprocess.PIPE, bufsize=-1)
-        popen.communicate()
+        print(os.path.join(self.path_to_bin, 'nlpdecode'))
+
+        subprocess.call(
+            [os.path.join(self.path_to_bin, 'nlpdecode'),
+             '-c', self.config_file,
+             '-i', self.input_path,
+             '-threads', threads])
+
 
         f = open(self.input_path + '.nlp', 'r')
         taggedSnt = f.read()
